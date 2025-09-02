@@ -424,13 +424,13 @@ bool XboxController::parseLinuxEvent(const js_event &event)
             case 1:
                 currentState_.leftStickY = event.value;
                 break;
-            case 2:
+            case 3:
                 currentState_.rightStickX = event.value;
                 break;
-            case 3:
+            case 4:
                 currentState_.rightStickY = event.value;
                 break;
-            case 4:
+            case 2:
                 currentState_.leftTrigger = (event.value + 32768) / 256;
                 break;
             case 5:
