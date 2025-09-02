@@ -4,8 +4,14 @@ project(xbox_joystick_forwarder)
 set(CMAKE_CXX_STANDARD 17)
 
 # Find required packages
+
+# Since we installed zenoh locally, we will add the path to our CMAKE_PREFIX_PATH so CMake can find it
+list (APPEND CMAKE_PREFIX_PATH "~/.local")
+
+# Find necessary packages
+find_package(zenohc)
+find_package(zenohcxx)
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(ZMQ REQUIRED libzmq)
 pkg_check_modules(JSONCPP REQUIRED jsoncpp)
 
 # Set third_party paths
@@ -15,8 +21,6 @@ set(JSONCPP_ROOT ${THIRD_PARTY_DIR}/json)
 
 # Include directories
 include_directories(
-    ${ZMQ_ROOT}
-    ${JSONCPP_ROOT}
     include
 )
 
@@ -31,8 +35,8 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME}
-    ${ZMQ_LIBRARIES}
-    ${JSONCPP_LIBRARIES}
+    jsoncpp
+    zenohcxx::zenohc
 )
 
 # Platform-specific libraries
