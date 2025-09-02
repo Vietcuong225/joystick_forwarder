@@ -135,20 +135,24 @@ bool XboxController::update()
 
     js_event event;
     fd_set set;
-    struct timeval timeout;
+    // struct timeval timeout;
 
-    FD_ZERO(&set);
-    FD_SET(joystickFd_, &set);
-    timeout.tv_sec = 0;
-    timeout.tv_usec = 0;
+    // FD_ZERO(&set);
+    // FD_SET(joystickFd_, &set);
+    // timeout.tv_sec = 0;
+    // timeout.tv_usec = 0;
 
-    if (select(joystickFd_ + 1, &set, NULL, NULL, &timeout) > 0)
+    // if (select(joystickFd_ + 1, &set, NULL, NULL, &timeout) > 0)
+    // {
+    //     ssize_t bytes = read(joystickFd_, &event, sizeof(event));
+    //     if (bytes == sizeof(event))
+    //     {
+    //         return parseLinuxEvent(event);
+    //     }
+    // }
+    while (read(joystickFd_, &event, sizeof(event)) > 0)
     {
-        ssize_t bytes = read(joystickFd_, &event, sizeof(event));
-        if (bytes == sizeof(event))
-        {
-            return parseLinuxEvent(event);
-        }
+        parseLinuxEvent(event);
     }
 
     return true;
@@ -338,11 +342,11 @@ void XboxController::processAppleInput(IOHIDValueRef value)
 bool XboxController::findXboxController()
 {
     const char *devicePaths[] = {
-        "/dev/input/js0",
-        "/dev/input/js1",
-        "/dev/input/js2",
+        // "/dev/input/js0",
+        // "/dev/input/js1",
+        // "/dev/input/js2",
         "/dev/input/js3",
-        "/dev/input/js4",
+        // "/dev/input/js4",
         nullptr};
 
     for (int i = 0; devicePaths[i] != nullptr; ++i)
